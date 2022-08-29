@@ -30,6 +30,14 @@ if (WIN32)
   target_include_directories(${PROJECT_NAME} PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/${PROJECT_INSTALL_SUBDIR})
 
+  # Headers to install with the library.
+  target_sources(${PROJECT_NAME} PUBLIC FILE_SET HEADERS
+    BASE_DIRS
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
+
+    FILES
+    src/dlfcn.h)
+
   # Specify the install target and its export name.
   install(
     TARGETS
@@ -42,7 +50,16 @@ if (WIN32)
     Development
 
     DESTINATION
-    ${CMAKE_INSTALL_LIBDIR}/${PROJECT_INSTALL_SUBDIR})
+    ${CMAKE_INSTALL_LIBDIR}/${PROJECT_INSTALL_SUBDIR}
+
+    FILE_SET
+    HEADERS
+
+    COMPONENT
+    Development
+
+    DESTINATION
+    ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_INSTALL_SUBDIR})
 
   # Install the project's export details.
   install(
@@ -51,9 +68,6 @@ if (WIN32)
 
     FILE
     ${PROJECT_NAME}-targets.cmake
-
-    NAMESPACE
-    ${PROJECT_NAMESPACE}
 
     DESTINATION
     ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_INSTALL_SUBDIR})
